@@ -12,7 +12,6 @@ import { ColorSchemeName, Pressable } from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import Home from '../screens/Home';
 import About from '../screens/About';
@@ -20,6 +19,7 @@ import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../typ
 import LinkingConfiguration from './LinkingConfiguration';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import AboutMore from '../screens/AboutMore';
+import ScrollViews from '../screens/ScrollViews';
 
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
@@ -37,27 +37,24 @@ const Drawer = createDrawerNavigator();
 function MyDrawer() {
   return (
     <Drawer.Navigator>
-      <Drawer.Screen name="home" component={RootNavigator} />
-      <Drawer.Screen name="About" component={About} />
+      <Drawer.Screen name="home" component={HomeNavigator} />
+      <Drawer.Screen name="About" component={AboutTabs} options={{headerShown: false}}/>
     </Drawer.Navigator>
   );
 }
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-function RootNavigator() {
+function HomeNavigator() {
   return (
     <Stack.Navigator >
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
-      <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
-      <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="Modal" component={ModalScreen} />
-      </Stack.Group>
+      <Stack.Screen name="NotFound" component={NotFoundScreen}  />
     </Stack.Navigator>
   );
 }
 
-const BottomTab = createBottomTabNavigator<RootTabParamList>();
+const BottomTab = createBottomTabNavigator();
 
 function BottomTabNavigator() {
   const colorScheme = useColorScheme();
@@ -70,15 +67,18 @@ function BottomTabNavigator() {
         headerShown:false
       }}>
       <BottomTab.Screen
-        name="TabOne"
+        name="Home"
         component={Home}
+        options={{
+          tabBarIcon: () => <FontAwesome name="home" size={24} color="black" />
+        }}
       />
       <BottomTab.Screen
-        name="TabTwo"
-        component={AboutTabs}
+        name="ScrollView"
+        component={ScrollViews}
         options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: 'Scroll',
+          tabBarIcon: () => <FontAwesome name="list" size={24} color="black" />,
         }}
       />
     </BottomTab.Navigator>
@@ -90,16 +90,8 @@ const AboutStack = createNativeStackNavigator()
 function AboutTabs () {
   return (
     <AboutStack.Navigator>
-      <AboutStack.Screen name="About" component={About} options={{ headerShown: false }} />
-      <AboutStack.Screen name="AboutMore" component={AboutMore} />
+      <AboutStack.Screen name="About" component={About} options={{headerTitleAlign:'center'}} />
+      <AboutStack.Screen name="AboutMore" component={AboutMore} options={{headerTitleAlign:'center'}}/>
     </AboutStack.Navigator>
   )
 }
-
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
-  color: string;
-}) {
-  return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
-}
-
