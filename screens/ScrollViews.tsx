@@ -1,7 +1,5 @@
 import * as React from "react";
-import { StyleSheet, ScrollView, FlatList, Button } from "react-native";
-import { Text, View } from "../components/Themed";
-
+import { StyleSheet, ScrollView, FlatList, Button, Text, View} from "react-native";
 const items = [
   { id: 0, name: "item 0" },
   { id: 1, name: "item 1" },
@@ -48,7 +46,7 @@ export default function ScrollViews() {
     <View style={styles.container}>
       <Text style={styles.title}>ScrollViews</Text>
       <View style={{ flexDirection: "row" }}>
-        <Button title="scrollView" onPress={() => setView(true)}>
+        <Button title="scrollView" onPress={() => setView(true)} >
           ScrollView
         </Button>
         <Button title="flatList" onPress={() => setView(false)} color={"#Faa"}>
@@ -57,8 +55,7 @@ export default function ScrollViews() {
       </View>
       <View
         style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
+
       />
       {view ? <Scroll /> : <FlatListComponent />}
     </View>
